@@ -15,12 +15,12 @@ import { UtilModule } from './util/util.module';
 @Module({
   imports: [ApiModule, UserModule, AuthModule, FileModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
+      type: 'mysql',
+      host: '127.0.0.1',
+      port: 3306,
+      username: 'mike',
       password: 'huy221100',
-      database: 'devprj1',
+      database: 'project1',
       entities: [User, UploadFile],
       logger: "debug",
       synchronize: true
