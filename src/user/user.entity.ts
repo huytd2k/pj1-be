@@ -16,7 +16,7 @@ export default class User {
 
     @PrimaryGeneratedColumn()
     @Field(type => Int)
-    userId: number;
+    userId: string;
 
     @Column()
     @Field(type => String)
@@ -28,6 +28,6 @@ export default class User {
 
     // @Field(type => [UploadFile])
     @OneToMany(() => UploadFile, file => file.uploadedBy)
-    files: File[];
+    files: UploadFile[];
 
 }

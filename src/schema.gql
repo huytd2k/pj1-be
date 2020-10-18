@@ -8,15 +8,31 @@ type User {
   password: String!
 }
 
+type UploadFile {
+  fileId: String!
+  filename: String!
+  uploadedBy: [User!]!
+  createdAt: String!
+  serverLink: [String!]!
+}
+
 type Query {
   users: [User!]!
+  findAllFile(userId: String!): [UploadFile!]!
 }
 
 type Mutation {
   register(createUserDto: UserCreateDTO!): User!
+  createFile(fileCreate: FileCreateDto!): User!
 }
 
 input UserCreateDTO {
   username: String!
   password: String!
+}
+
+input FileCreateDto {
+  filename: String!
+  uploadUserId: Int!
+  serverLink: String!
 }

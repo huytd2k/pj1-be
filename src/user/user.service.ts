@@ -23,4 +23,7 @@ export class UserService {
     async findAll() {
         return await this.userRepository.find();
     }
+    async findByUserId(userId: string) {
+        return await this.userRepository.findOneOrFail({userId: userId});
+    }
 }
