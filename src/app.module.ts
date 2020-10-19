@@ -11,6 +11,8 @@ import { TypeOrmModule } from '@nestjs/typeorm/dist/typeorm.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { UtilModule } from './util/util.module';
+import { BaseService } from 'src/base.service';
+import { ValidateModule } from './validate/validate.module';
 
 @Module({
   imports: [ApiModule, UserModule, AuthModule, FileModule,
@@ -23,13 +25,15 @@ import { UtilModule } from './util/util.module';
       database: 'project1',
       entities: [User, UploadFile],
       logger: "debug",
+      logging: true,
       synchronize: true
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql')}),
     UtilModule,
+    ValidateModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, BaseService],
 })
 export class AppModule { }

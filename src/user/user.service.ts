@@ -1,29 +1,36 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BaseService } from 'src/base.service';
 import { EncryptHelper } from 'src/util/encrypt.util';
 import { Repository } from 'typeorm';
 import UserCreateDTO from './user-create.dto';
 import User from './user.entity';
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService< User, Repository<User> >{
 
     constructor(
         @InjectRepository(User) private readonly userRepository : Repository<User>
-    ) { }
-
-
-    async create(payload : UserCreateDTO) {
-        const existedUser = await this.userRepository.findOne({username: payload.username});
-        if(existedUser) throw new HttpException("Existed User !", HttpStatus.BAD_REQUEST);
-        const user = new User({...payload, password: await EncryptHelper.hash(payload.password)});
-        return await this.userRepository.save(user);
+    ) { 
+        super(userRepository);
     }
+
+
+    // async create(payload : UserCreateDTO) {
+    //     const existedUser = await this.userRepository.findOne({username: payload.username});
+    //     if(existedUser) throw new HttpException("Existed User !", HttpStatus.BAD_REQUEST);
+    //     const user = new User({...payload, password: await EncryptHelper.hash(payload.password)});
+    //     return await this.userRepository.save(user);
+    // }
 
     async findAll() {
         return await this.userRepository.find();
     }
-    async findByUserId(userId: string) {
+    async findByUserId(userId: number) {
         return await this.userRepository.findOneOrFail({userId: userId});
+    }
+
+    async findByUsername(username: string) {
+        return await this.userRepository.findOne({username: username});
     }
 }

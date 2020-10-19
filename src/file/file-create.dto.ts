@@ -6,7 +6,7 @@ export class FileCreateDto {
     filename: string;
 
     @Field(type => Int)
-    uploadUserId: string;    
+    uploadUserId: number;    
 
     @Field(type => String)
     serverLink: string;

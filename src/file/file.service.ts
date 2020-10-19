@@ -26,7 +26,7 @@ export class FileService {
         }
 
     }
-    async findAllFile(userId: string) {
+    async findAllFile(userId: number) {
         try {
             const foundUser = await this.userService.findByUserId(userId);
             return foundUser.files;

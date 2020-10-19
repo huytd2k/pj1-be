@@ -6,6 +6,7 @@ type User {
   userId: Int!
   username: String!
   password: String!
+  files: [UploadFile!]!
 }
 
 type UploadFile {
@@ -18,7 +19,7 @@ type UploadFile {
 
 type Query {
   users: [User!]!
-  findAllFile(userId: String!): [UploadFile!]!
+  findAllFile(userId: Int!): [UploadFile!]!
 }
 
 type Mutation {

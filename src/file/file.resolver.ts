@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import User from 'src/user/user.entity';
 import { FileCreateDto } from './file-create.dto';
 import UploadFile from './file.entity';
@@ -9,7 +9,7 @@ export class FileResolver {
     constructor(private readonly fileService: FileService) {}
 
     @Query( returns => [UploadFile])
-    async findAllFile(@Args('userId', {type: () => String}) userId: string) {
+    async findAllFile(@Args('userId', {type: () => Int}) userId: number) {
         return await this.fileService.findAllFile(userId);
     }
     @Mutation( returns => User)
