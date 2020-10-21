@@ -17,10 +17,12 @@ export class FileService {
 
     async createFile(payload: FileCreateDto) {
         try {
-            const foundUser = await this.userService.findByUserId( payload.uploadUserId );
+            const foundUser = await this.userRepository.createQueryBuilder('user').leftJoinAndSelect('user.files', 'file').where("user.userId = :id", {id: payload.uploadUserId}).getOne();
             const newFile = new UploadFile({...payload});
+            await this.fileRepository.save(newFile);
             foundUser.files.push(newFile);
-            await this.userRepository.update({userId: foundUser.userId}, foundUser);
+            await this.userRepository.save(foundUser);
+            return foundUser;
         } catch {
             throw new HttpException("Bad request !", HttpStatus.BAD_REQUEST)
         }

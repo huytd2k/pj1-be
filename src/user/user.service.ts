@@ -7,7 +7,7 @@ import UserCreateDTO from './user-create.dto';
 import User from './user.entity';
 
 @Injectable()
-export class UserService extends BaseService< User, Repository<User> >{
+export class UserService extends BaseService<User, Repository<User> >{
 
     constructor(
         @InjectRepository(User) private readonly userRepository : Repository<User>
@@ -26,8 +26,8 @@ export class UserService extends BaseService< User, Repository<User> >{
     async findAll() {
         return await this.userRepository.find();
     }
-    async findByUserId(userId: number) {
-        return await this.userRepository.findOneOrFail({userId: userId});
+    findByUserId(userId: number) {
+        return this.userRepository.findOneOrFail({userId: userId});
     }
 
     async findByUsername(username: string) {
