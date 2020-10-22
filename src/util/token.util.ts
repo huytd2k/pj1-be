@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 
 export class TokenHelper {
-    static generateToken(payload :string, expriresIn: number) {
+    static generateToken<T extends Object>(payload :T, expriresIn: number) {
         return jwt.sign(payload, "secret", {expiresIn: expriresIn})
     }
     static verifyToken(token: string) {

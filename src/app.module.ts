@@ -29,7 +29,9 @@ import { ValidateModule } from './validate/validate.module';
       synchronize: true
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql')}),
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({req}) => ( {headers:  req.headers })
+    }),
     UtilModule,
     ValidateModule,
   ],

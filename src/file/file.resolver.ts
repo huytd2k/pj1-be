@@ -1,4 +1,6 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth/auth.guard';
 import User from 'src/user/user.entity';
 import { FileCreateDto } from './file-create.dto';
 import UploadFile from './file.entity';
@@ -13,7 +15,9 @@ export class FileResolver {
         return await this.fileService.findAllFile(userId);
     }
     @Mutation( returns => User)
-    async createFile(@Args('fileCreate') payload: FileCreateDto) {
+    @UseGuards(AuthGuard)
+    async createFile(@Args('fileCreate') payload: FileCreateDto, @Context() {user}) {
+        if(payload.uploadUserId != user.userId) throw new HttpException("Forbidden !", HttpStatus.FORBIDDEN)
        return await this.fileService.createFile(payload); 
     }
 }

@@ -5,7 +5,6 @@
 type User {
   userId: Int!
   username: String!
-  password: String!
   files: [UploadFile!]!
 }
 
@@ -19,15 +18,22 @@ type UploadFile {
 
 type Query {
   users: [User!]!
+  me: User!
   findAllFile(userId: Int!): [UploadFile!]!
 }
 
 type Mutation {
   register(createUserDto: UserCreateDTO!): User!
+  login(userLogin: UserLoginDTO!): String!
   createFile(fileCreate: FileCreateDto!): User!
 }
 
 input UserCreateDTO {
+  username: String!
+  password: String!
+}
+
+input UserLoginDTO {
   username: String!
   password: String!
 }

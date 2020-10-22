@@ -24,7 +24,6 @@ export default class User extends BaseEntity{
     username : string;
 
     @Column()
-    @Field(type => String)
     password: string;
 
     @Field(type => [UploadFile])
