@@ -13,7 +13,8 @@ type UploadFile {
   filename: String!
   uploadedBy: [User!]!
   createdAt: String!
-  serverLink: [String!]!
+  serverLink: String!
+  shortenedLink: String!
 }
 
 type Query {
@@ -25,7 +26,7 @@ type Query {
 type Mutation {
   register(createUserDto: UserCreateDTO!): User!
   login(userLogin: UserLoginDTO!): String!
-  createFile(fileCreate: FileCreateDto!): User!
+  uploadFile(file: Upload!): User!
 }
 
 input UserCreateDTO {
@@ -38,8 +39,5 @@ input UserLoginDTO {
   password: String!
 }
 
-input FileCreateDto {
-  filename: String!
-  uploadUserId: Int!
-  serverLink: String!
-}
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

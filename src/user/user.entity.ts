@@ -27,7 +27,9 @@ export default class User extends BaseEntity{
     password: string;
 
     @Field(type => [UploadFile])
-    @OneToMany(() => UploadFile, file => file.uploadedBy)
+    @OneToMany(() => UploadFile, file => file.uploadedBy, {
+        onDelete: 'CASCADE' 
+    })
     files: UploadFile[];
 
 }

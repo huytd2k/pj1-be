@@ -13,6 +13,7 @@ import { join } from 'path';
 import { UtilModule } from './util/util.module';
 import { BaseService } from 'src/base.service';
 import { ValidateModule } from './validate/validate.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [ApiModule, UserModule, AuthModule, FileModule,
@@ -30,7 +31,14 @@ import { ValidateModule } from './validate/validate.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({req}) => ( {headers:  req.headers })
+      context: ({req}) => ( {headers:  req.headers }),
+      uploads: {
+        maxFieldSize: Infinity,
+        maxFiles: 10
+      }
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
     UtilModule,
     ValidateModule,

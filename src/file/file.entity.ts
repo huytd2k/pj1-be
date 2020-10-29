@@ -27,7 +27,11 @@ export default class UploadFile {
     @CreateDateColumn()
     createdAt: string;
 
-    @Field(type => [String])
+    @Field(type => String)
     @Column()
     serverLink: string;
+
+    @Field(type => String)
+    @Column({nullable: true})
+    shortenedLink: string;
 }

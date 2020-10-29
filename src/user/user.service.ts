@@ -24,7 +24,7 @@ export class UserService extends BaseService<User, Repository<User> >{
     // }
 
     async findAll() {
-        return await this.userRepository.find();
+        return await this.userRepository.find({relations: ['files']});
     }
     findByUserId(userId: number) {
         return this.userRepository.findOneOrFail({userId: userId});

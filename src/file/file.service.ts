@@ -23,8 +23,8 @@ export class FileService {
             foundUser.files.push(newFile);
             await this.userRepository.save(foundUser);
             return foundUser;
-        } catch {
-            throw new HttpException("Bad request !", HttpStatus.BAD_REQUEST)
+        } catch(err) {
+            throw new HttpException(err, HttpStatus.BAD_REQUEST)
         }
 
     }
