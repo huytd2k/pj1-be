@@ -13,7 +13,7 @@ export class UserResolver {
    ) {}
    
    @Query( returns => [User] ) 
-   async users()
+   async getUsers()
    {
         return this.userService.findAll();
    }

@@ -19,7 +19,7 @@ export default class UploadFile {
     @Column()
     filename : string;
 
-    @Field(type => [User])
+    @Field(type => User)
     @ManyToOne( () => User, user => user.files)
     uploadedBy: User;
 

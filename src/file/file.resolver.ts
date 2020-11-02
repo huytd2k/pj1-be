@@ -18,28 +18,28 @@ export class FileResolver {
     return await this.fileService.findAllFile(userId);
   }
 
-  @UseGuards(AuthGuard)
-  @Mutation(() => User)
-  async uploadFile(
-    @Args({ name: 'file', type: () => GraphQLUpload })
-    { createReadStream, filename }: FileUpload,
-    @Context() { user },
-  ): Promise<User> {
-    return new Promise(async (resolve, reject) => {
-      filename = editFileName(filename);
-      const payload: FileCreateDto = {
-        filename,
-        uploadUserId: user.userId,
-        serverLink: `./uploads/${filename}`,
-      };
-      createReadStream()
-        .pipe(createWriteStream(`./uploads/${filename}`))
-        .on('finish', async () => {
-          const retUser = await this.fileService.createFile(payload);
-          resolve(retUser);
-        })
-        .on('error', () => reject(new Error('Error while uploading')));
-    });
-  }
+//   @UseGuards(AuthGuard)
+//   @Mutation(() => User)
+//   async uploadFile(
+//     @Args({ name: 'file', type: () => GraphQLUpload })
+//     { createReadStream, filename }: FileUpload,
+//     @Context() { user },
+//   ): Promise<User> {
+//     return new Promise(async (resolve, reject) => {
+//       filename = editFileName(filename);
+//       const payload: FileCreateDto = {
+//         filename,
+//         uploadUserId: user.userId,
+//         serverLink: `./uploads/${filename}`,
+//       };
+//       createReadStream()
+//         .pipe(createWriteStream(`./uploads/${filename}`))
+//         .on('finish', async () => {
+//           const retUser = await this.fileService.createFile(payload);
+//           resolve(retUser);
+//         })
+//         .on('error', () => reject(new Error('Error while uploading')));
+//     });
+//   }
 
 }
