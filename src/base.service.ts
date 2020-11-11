@@ -27,7 +27,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T> > impleme
     }
 
     delete(id: EntityId): Promise<DeleteResult> {
-        throw new Error("Method not implemented.");
+        return this.repository.delete(id);
     }
 
 

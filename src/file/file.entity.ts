@@ -1,14 +1,15 @@
 
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import User from "src/user/user.entity";
+import { Int, ObjectType } from "@nestjs/graphql";
 import { Field } from "@nestjs/graphql/dist/decorators/field.decorator";
-import { ObjectType } from "@nestjs/graphql";
+import User from "src/user/user.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
 
 @ObjectType()
 @Entity()
-export default class UploadFile {
+export default class UploadFile extends BaseEntity{
     constructor(pt: Partial<UploadFile>) {
-        Object.assign(this, pt)
+        super();
+        Object.assign(this, pt);
     }
 
     @Field(type => String)
@@ -19,19 +20,30 @@ export default class UploadFile {
     @Column()
     filename : string;
 
-    @Field(type => User)
+    @Field(type => String)
+    @Column()
+    originalName : string;
+
     @ManyToOne( () => User, user => user.files)
     uploadedBy: User;
 
-    @Field( type => String)
+    @Field( type => Date)
     @CreateDateColumn()
-    createdAt: string;
+    createdAt: Date;
 
     @Field(type => String)
     @Column()
     serverLink: string;
 
-    @Field(type => String)
+    @Field(type => Int)
+    @Column({type: "int"})
+    sizeInBytes: number;
+
+    @Field(type => String, {nullable: true})
     @Column({nullable: true})
     shortenedLink: string;
+
+    @RelationId((file: UploadFile) => file.uploadedBy)
+    @Field(type => Int)
+    uploadedUserId : number;
 }

@@ -9,7 +9,8 @@ import { ValidateModule } from './validate/validate.module';
 import * as redis from "redis";
 import * as connectRedis from "connect-redis"
 import * as session from 'express-session';
-
+import { HttpExceptionFilter } from './filter/http-exception.filter';
+import 'reflect-metadata'
 const redisClient = redis.createClient({
   host: 'localhost',
   no_ready_check: true,
@@ -35,7 +36,12 @@ async function bootstrap() {
     ttl: 86400
   })
   }))
+  app.enableCors();
+
+
   app.useGlobalPipes(new ValidationPipe());
+
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   useContainer(app.select(AppModule), {fallbackOnErrors: true});
   const options = new DocumentBuilder().setTitle('Project I - Filesharing - Backend').setDescription("API Document for my PJ1 back-end").setVersion("0.1").build()

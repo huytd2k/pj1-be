@@ -14,7 +14,7 @@ import { UtilModule } from './util/util.module';
 import { BaseService } from 'src/base.service';
 import { ValidateModule } from './validate/validate.module';
 import { MulterModule } from '@nestjs/platform-express';
-
+import { ServeStaticModule} from '@nestjs/serve-static'
 @Module({
   imports: [ApiModule, UserModule, AuthModule, FileModule,
     TypeOrmModule.forRoot({

@@ -16,21 +16,25 @@ export class UserService extends BaseService<User, Repository<User> >{
     }
 
 
-    // async create(payload : UserCreateDTO) {
-    //     const existedUser = await this.userRepository.findOne({username: payload.username});
-    //     if(existedUser) throw new HttpException("Existed User !", HttpStatus.BAD_REQUEST);
-    //     const user = new User({...payload, password: await EncryptHelper.hash(payload.password)});
-    //     return await this.userRepository.save(user);
-    // }
+    async create(payload : UserCreateDTO) {
+        const existedUser = await this.userRepository.findOne({username: payload.username});
+        if(existedUser) throw new HttpException("Existed User !", HttpStatus.BAD_REQUEST);
+        const user = new User({...payload, password: await EncryptHelper.hash(payload.password)});
+        return await this.userRepository.save(user);
+    }
 
     async findAll() {
         return await this.userRepository.find({relations: ['files']});
     }
-    findByUserId(userId: number) {
-        return this.userRepository.findOneOrFail({userId: userId});
+    async findByUserId(userId: number) {
+       return await this.userRepository.createQueryBuilder('user').leftJoinAndSelect('user.files', 'file').where("user.userId = :id", {id: userId}).getOne();
     }
 
     async findByUsername(username: string) {
         return await this.userRepository.findOne({username: username});
+    }
+
+    async findByFileId(fileId: number) {
+       return await this.userRepository.createQueryBuilder('user').leftJoinAndSelect('user.files', 'file').where("file.fileId = :id", {id: fileId}).getOne();
     }
 }

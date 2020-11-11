@@ -5,27 +5,38 @@
 type User {
   userId: Int!
   username: String!
-  files: [UploadFile!]!
+  files: [UploadFile!]
 }
 
 type UploadFile {
   fileId: String!
   filename: String!
-  uploadedBy: User!
-  createdAt: String!
+  originalName: String!
+  createdAt: DateTime!
   serverLink: String!
-  shortenedLink: String!
+  sizeInBytes: Int!
+  shortenedLink: String
+  uploadedUserId: Int!
+  uploadedBy: User!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   getUsers: [User!]!
   me: User!
-  findAllFile(userId: Int!): [UploadFile!]!
+  findAllFile: [UploadFile!]!
+  findFileById(id: Int!): UploadFile!
 }
 
 type Mutation {
-  register(createUserDto: UserCreateDTO!): User!
+  register(createUserDto: UserCreateDTO!): String!
   login(userLogin: UserLoginDTO!): String!
+  deleteById(id: Int!): Boolean!
+  uploadFile(file: Upload!): User!
 }
 
 input UserCreateDTO {
@@ -37,3 +48,6 @@ input UserLoginDTO {
   username: String!
   password: String!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

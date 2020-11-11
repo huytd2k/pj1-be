@@ -1,24 +1,25 @@
 import {
   Controller,
-  Post,
-  UploadedFile,
-  UploadedFiles,
-  UseInterceptors,
+  Get,
+  Param,
+
+  Res
 } from '@nestjs/common';
-import { AnyFilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { editFileName } from 'src/util/editFileName.util';
+import {
+  Response
+} from 'express'
+import * as path from 'path';
+import { FileService } from './file.service';
 
 @Controller('file')
 export class FileController {
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file', {storage: diskStorage({destination: './uploads' ,filename: editFileName})}))
-  async upload(@UploadedFile() file) {
-    const response = {
-      originalname: file.originalname,
-      filename: file.filename,
-    };
-    return response;
+  constructor(
+    private readonly fileService : FileService
+  ) {}1
+
+  @Get(':id')
+  async upload(@Param('id') id, @Res() res: Response) {
+    const foundFile = await this.fileService.findById(id);
+    res.download(path.join(__dirname, '..', '..', foundFile.serverLink))
   }
 }

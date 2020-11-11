@@ -1,19 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BaseService } from 'src/base.service';
 import User from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import { BaseEntity, Repository } from 'typeorm';
 import { FileCreateDto } from './file-create.dto';
 import UploadFile from './file.entity';
 
 @Injectable()
-export class FileService {
+export class FileService extends BaseService<UploadFile, Repository<UploadFile>> {
 
     constructor(
         private readonly userService: UserService,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(UploadFile) private readonly fileRepository: Repository<UploadFile>
-    ) { }
+    ) { 
+        super(fileRepository);
+    }
 
     async createFile(payload: FileCreateDto) {
         try {
