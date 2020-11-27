@@ -15,6 +15,8 @@ import { BaseService } from 'src/base.service';
 import { ValidateModule } from './validate/validate.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule} from '@nestjs/serve-static'
+import { FolderModule } from './folder/folder.module';
+import { Folder } from './folder/folder.entity';
 @Module({
   imports: [ApiModule, UserModule, AuthModule, FileModule,
     TypeOrmModule.forRoot({
@@ -24,7 +26,8 @@ import { ServeStaticModule} from '@nestjs/serve-static'
       username: 'mike',
       password: 'huy221100',
       database: 'project1',
-      entities: [User, UploadFile],
+      autoLoadEntities: true,
+      entities: [User, UploadFile, Folder],
       logger: "debug",
       logging: true,
       synchronize: true
@@ -42,6 +45,7 @@ import { ServeStaticModule} from '@nestjs/serve-static'
     }),
     UtilModule,
     ValidateModule,
+    FolderModule,
   ],
   controllers: [AppController],
   providers: [AppService, BaseService],

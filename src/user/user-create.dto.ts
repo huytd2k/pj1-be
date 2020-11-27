@@ -6,9 +6,11 @@ import { UniqueUsernameValidator } from "src/validate/unique-username.validator"
 export default class UserCreateDTO{
     @Length(8,20)
     @Validate(UniqueUsernameValidator, {message: ""})
-    @Field( type => String)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Field( _type => String)
     username: string;
 
-    @Field( type => String)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Field( _type => String)
     password: string;
 }

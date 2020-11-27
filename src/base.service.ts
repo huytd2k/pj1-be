@@ -5,13 +5,22 @@ import { EntityId } from "typeorm/repository/EntityId";
 import { IBaseService } from "./i.base.service";
 
 // @Injectable()
-export class BaseService<T extends BaseEntity, R extends Repository<T> > implements IBaseService<T> {
+export class BaseService<T extends BaseEntity, R extends Repository<T> >{
     constructor(private readonly repository: Repository<T>) {}
-    findById(id: EntityId): Promise<T> {
-        return this.repository.findOne(id);
+
+    index(): Promise<T[]> {
+        return this.repository.find();
     }
-    findByIds(ids: [EntityId]): Promise<T[]> {
-        return this.repository.findByIds(ids);
+
+    findByPartial(pt: QueryDeepPartialEntity<T>): Promise<T> {
+        return this.repository.findOne({where: pt});
+    } 
+
+    findById(id: EntityId, relations?: string[]): Promise<T> {
+        return this.repository.findOne(id, {relations});
+    }
+    findByIds(ids: [EntityId], relations?: string[]): Promise<T[]> {
+        return this.repository.findByIds(ids, {relations});
     }
 
     create(payload: DeepPartial<T>): Promise<T> {

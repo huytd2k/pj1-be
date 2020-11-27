@@ -2,10 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Folder {
+  id: Int!
+  name: String!
+  isRootFolder: Boolean!
+}
+
 type User {
   userId: Int!
   username: String!
   files: [UploadFile!]
+  folders: [UploadFile!]
 }
 
 type UploadFile {
@@ -30,6 +37,7 @@ type Query {
   me: User!
   findAllFile: [UploadFile!]!
   findFileById(id: Int!): UploadFile!
+  findFolders: [Folder!]!
 }
 
 type Mutation {
@@ -37,6 +45,7 @@ type Mutation {
   login(userLogin: UserLoginDTO!): String!
   deleteById(id: Int!): Boolean!
   uploadFile(file: Upload!): User!
+  createFolder(createFolderDTO: FolderCreateDTO!): Folder!
 }
 
 input UserCreateDTO {
@@ -51,3 +60,8 @@ input UserLoginDTO {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input FolderCreateDTO {
+  name: String!
+  parentFolderId: Int
+}

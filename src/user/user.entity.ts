@@ -2,12 +2,12 @@ import { Field } from '@nestjs/graphql/dist/decorators/field.decorator';
 import { ObjectType } from '@nestjs/graphql/dist/decorators/object-type.decorator';
 import { Int } from '@nestjs/graphql/dist/scalars';
 import UploadFile from 'src/file/file.entity';
+import { Folder } from 'src/folder/folder.entity';
 import {
     BaseEntity,
     Column,
     Entity,
     OneToMany,
-
     PrimaryGeneratedColumn
 } from 'typeorm';
 
@@ -39,4 +39,14 @@ export default class User extends BaseEntity {
     },
   )
   files: UploadFile[];
+
+  @Field(type => [UploadFile], { nullable: true })
+  @OneToMany(
+    () => Folder,
+    folder => folder.uploadedBy,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
+  folders: Folder[];
 }
