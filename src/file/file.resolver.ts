@@ -18,7 +18,7 @@ export class FileResolver {
   constructor(
     private readonly fileService: FileService,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   @Query(returns => [UploadFile])
   @UseGuards(AuthGuard)
@@ -27,7 +27,7 @@ export class FileResolver {
   }
 
   @Query(returns => UploadFile)
-  async findFileById(@Args({name: "id", type: () => Int}) id: string) {
+  async findFileById(@Args({ name: "id", type: () => Int }) id: string) {
     return this.fileService.findById(id);
   }
 
@@ -40,7 +40,7 @@ export class FileResolver {
 
   @Mutation(returns => Boolean)
   @UseGuards(AuthGuard)
-  async deleteById(@Args('id', {type: () => Int}) id: number,@Context() { user }) {
+  async deleteById(@Args('id', { type: () => Int }) id: number, @Context() { user }) {
     return !!await (await this.fileService.delete(id)).affected;
   }
 
@@ -55,7 +55,9 @@ export class FileResolver {
       let fileSize = 0;
       const editedName = editFileName(filename);
       createReadStream()
-        .on('data', (chunk) => fileSize+=chunk.length)
+        .on('data', (chunk) => {
+          return fileSize += chunk.length
+        })
         .pipe(createWriteStream(`./uploads/${filename}`))
         .on('finish', async (chunk) => {
           const payload: FileCreateDto = {
@@ -68,7 +70,9 @@ export class FileResolver {
           const retUser = await this.fileService.createFile(payload);
           resolve(retUser);
         })
-        .on('error', () => reject(new Error('Error while uploading')));
+        .on('error', (err) => {
+          reject(new Error('Error while uploading'))
+        });
     });
   }
 }
